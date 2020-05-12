@@ -29,15 +29,20 @@ public class Neo4jUtil {
 	}
 
 	public Result excuteCypherSql(String cypherSql) {
-		Result result = null;
-		try (Session session = neo4jDriver.session()) {
-			System.out.println(cypherSql);
-			result = session.run(cypherSql);
-			session.close();
-		} catch (Exception e) {
-			throw e;
-		}
-		return result;
+
+		Session session = neo4jDriver.session();
+		System.out.println(cypherSql);
+		return session.run(cypherSql);
+
+//		Result result = null;
+//		try (Session session = neo4jDriver.session()) {
+//			System.out.println(cypherSql);
+//			result = session.run(cypherSql);
+//			session.close();
+//		} catch (Exception e) {
+//			throw e;
+//		}
+//		return result;
 	}
 
 
