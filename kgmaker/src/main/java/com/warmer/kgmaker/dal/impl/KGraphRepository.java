@@ -9,6 +9,8 @@ import com.warmer.kgmaker.util.Neo4jUtil;
 import com.warmer.kgmaker.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -142,7 +144,13 @@ public class KGraphRepository implements IKGraphRepository {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		removeFxFy((List<HashMap<String, Object>>)nr.get("node"));
+
+//		如果是在搜索页面 不进行坐标定位  同时把home页面的坐标定位也去掉？
+//		TODO:把home页面的显示 改为与index页面差不多的形式
+		String remoteUser = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader("referer");
+		if (remoteUser.contains("kg/index")) {
+			removeFxFy((List<HashMap<String, Object>>) nr.get("node"));
+		}
 		return nr;
 	}
 
