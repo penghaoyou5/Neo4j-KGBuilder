@@ -142,7 +142,15 @@ public class KGraphRepository implements IKGraphRepository {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		removeFxFy((List<HashMap<String, Object>>)nr.get("node"));
 		return nr;
+	}
+
+	private void removeFxFy(List<HashMap<String, Object>> nodeItem){
+		nodeItem.forEach(sOHashMap -> {
+			sOHashMap.remove("fx");
+			sOHashMap.remove("fy");
+		});
 	}
 
 	/**
