@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.Map.Entry;
+import org.neo4j.driver.Record;
 
 @Component
 public class Neo4jUtil {
