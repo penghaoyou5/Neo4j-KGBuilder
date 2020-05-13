@@ -114,9 +114,15 @@ public class KGraphRepository implements IKGraphRepository {
 						}
 
 					}
+
+
 					// 下边的查询查不到单个没有关系的节点,考虑要不要左箭头
 					String nodeSql = String.format("MATCH (n:`%s`) <-[r]->(m) %s return * limit %s", domain, cqWhere,
 							query.getPageSize());
+					if("ALLNode".equals(domain)){
+						nodeSql = String.format("MATCH (n) <-[r]->(m) %s return * limit %s", cqWhere,
+								query.getPageSize());
+					}
 					HashMap<String, Object> graphNode = neo4jUtil.GetGraphNodeAndShip(nodeSql);
 					Object node = graphNode.get("node");
 					// 没有关系显示则显示节点
@@ -133,10 +139,18 @@ public class KGraphRepository implements IKGraphRepository {
 				} else {
 					String nodeSql = String.format("MATCH (n:`%s`) %s RETURN distinct(n) limit %s", domain, cqWhere,
 							query.getPageSize());
+					if ("ALLNode".equals(domain)) {
+						nodeSql = String.format("MATCH (n) %s RETURN distinct(n) limit %s", cqWhere,
+								query.getPageSize());
+					}
 					List<HashMap<String, Object>> graphNode = neo4jUtil.GetGraphNode(nodeSql);
 					nr.put("node", graphNode);
 					String domainSql = String.format("MATCH (n:`%s`)<-[r]-> (m) %s RETURN distinct(r) limit %s", domain,
 							cqWhere, query.getPageSize());// m是否加领域
+					if ("ALLNode".equals(domain)) {
+						domainSql = String.format("MATCH (n)<-[r]-> (m) %s RETURN distinct(r) limit %s",
+								cqWhere, query.getPageSize());// m是否加领域
+					}
 					List<HashMap<String, Object>> graphRelation = neo4jUtil.GetGraphRelationShip(domainSql);
 					nr.put("relationship", graphRelation);
 				}
